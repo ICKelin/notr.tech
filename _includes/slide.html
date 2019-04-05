@@ -1,0 +1,76 @@
+<header class="header-area overlay full-height relative v-center" id="home-page"  style="background-color:black">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="caption_slide" class="carousel slide caption-slider" data-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active row">
+                            <div class="v-center">
+                                <div class="col-xs-12 col-md-3">
+                                </div>
+                                <div class="col-xs-12 col-md-6" style="text-align: center">
+                                    <h3 style="padding:30px">简单、方便、实惠的内网穿透服务</h3>
+                                    <form>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-lg" id = "url" />
+                                            <a href="#download" class="button" style="margin-top:0px;">下载试用</a>
+                                        </div> 
+                                    </form>
+                                </div>
+                                <div class="col-xs-12 col-md-3"></div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="v-center">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="caption-title" data-animation="animated fadeInUp">
+                                        <h2>高可用</h2>
+                                    </div>
+                                    <div class="caption-desc" data-animation="animated fadeInUp">
+                                        <p>
+                                            Notr后台提供多个云节点，单个云节点故障会迅速选择切换其他可用云节点，不会导致穿透失败。客户端实现断线检测与自动重连机制，确保及时修复网络不稳定等因素。
+                                        </p>
+                                    </div>
+                                    <div class="caption-button" data-animation="animated fadeInUp">
+                                        <a href="#download-page" class="button">马上注册</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="v-center">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="caption-title" data-animation="animated fadeInUp">
+                                        <h2>个性化域名</h2>
+                                    </div>
+                                    <div class="caption-desc" data-animation="animated fadeInUp">
+                                        <p>
+                                            我们提供多种域名方案，我们会为您生成唯一的域名，无论您或者您的用户在任何地方，均可通过域名进行访问；同时，您也可以添加自己的域名，使用自身域名访问。
+                                        </p>
+                                    </div>
+                                    <div class="caption-button" data-animation="animated fadeInUp">
+                                        <a href="#download-page" class="button">立即购买</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <img src="assets/images/domain.jpg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<script>
+    platform = getOsVersion()
+    if (platform == 1){
+    document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-darwin-amd64"
+    }else if(platform == 2){
+    document.getElementById("url").value = "http://www.notr.tech:8000/notr-windows.exe"
+    }else{
+    document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-linux-amd64"
+    } 
+</script>
+    
