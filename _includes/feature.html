@@ -8,7 +8,6 @@
                         <li>1. 内网应用无法访问</li>
                         <li>2. 运营商下发公网IP不固定</li>
                         <li>3. 多层NAT导致打洞复杂</li>
-                        <li>4. </li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-md-4">
@@ -27,7 +26,7 @@
                             <li>1. 注册用户</li>
                             <li>2. <a href="" id="platform-download">下载客户端</a></li>
                             <li>3. 运行客户端</li>
-                            <li><a href="">详细文档</a></li>
+                            <li><a href="/docs">详细文档</a></li>
                         </ul>
                 </div>
             </div>
@@ -40,12 +39,12 @@
     </div>
 </section>
 <script>
-    // platform = getOsVersion()
-    // if (platform == 1){
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-darwin-amd64"
-    // }else if(platform == 2){
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-windows.exe"
-    // }else{
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-linux-amd64"
-    // } 
+    platform = getOsVersion()
+    if (platform == 1){
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-darwin-amd64"
+    }else if(platform == 2){
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-windows.exe"
+    }else{
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-linux-amd64"
+    } 
 </script>

@@ -1,11 +1,16 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Notr内网穿透</title>
+<html class="no-js" lang="zxx">
 
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="ICKelin@notr">
+    <meta name="keywords" content="Notr,内网穿透，官网">
+    <meta name="description" content="Notr,反向代理，内网穿透，树莓派">
+    <meta name="description" content="Notr构建远程连接">
+    <meta name="description" content="Notr域名映射,Notr HTTPS免购买证书">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notr内网穿透</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/themify-icons.css">
@@ -14,24 +19,31 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/asciinema-player.css" />
+
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <script>
-        function getOsVersion(){
-          var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
-          var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC")
-                  || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
-              
-          if (isMac){
-            return 1
-          }else if(isWin){
-            return 2
-          }else{
-            return 3
-          } 
+      function getOsVersion(){
+        var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC")
+                || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+
+        if (isMac){
+          return 1
+        }else if(isWin){
+          return 2
+        }else{
+          return 3
         }
+      }
     </script>
-  </head>
-  <body data-spy="scroll" data-target="#primary-menu">
-    <div class="mainmenu-area" data-spy="affix" data-offset-top="100">
+</head>
+
+<body data-spy="scroll" data-target="#primary-menu">
+  <div class="mainmenu-area" data-spy="affix" data-offset-top="100">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#primary-menu">
@@ -48,7 +60,7 @@
                 <li><a href="#service-page">产品介绍</a></li>
                 <li><a href="#price-page">价格</a></li>
                 <li><a href="#download-page">下载</a></li>
-                <li><a href="#docs">文档</a></li>
+                <li><a href="/docs">文档</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#signinup-page">注册/登录</a></li>
@@ -57,7 +69,7 @@
     </div>
 </div>
 
-    <header class="header-area overlay full-height relative v-center" id="home-page"  style="background-color:black">
+  <header class="header-area overlay full-height relative v-center" id="home-page"  style="background-color:black">
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -112,7 +124,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
-                                    <img src="assets/images/domain.jpg">
+                                    <img src="assets/images/domain.jpg" class="img-rounded">
                                 </div>
                             </div>
                         </div>
@@ -133,7 +145,7 @@
     } 
 </script>
     
-    <section class="gray-bg section-padding100" id="service-page">
+  <section class="gray-bg section-padding100" id="service-page">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-8">
@@ -143,7 +155,6 @@
                         <li>1. 内网应用无法访问</li>
                         <li>2. 运营商下发公网IP不固定</li>
                         <li>3. 多层NAT导致打洞复杂</li>
-                        <li>4. </li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-md-4">
@@ -162,7 +173,7 @@
                             <li>1. 注册用户</li>
                             <li>2. <a href="" id="platform-download">下载客户端</a></li>
                             <li>3. 运行客户端</li>
-                            <li><a href="">详细文档</a></li>
+                            <li><a href="/docs">详细文档</a></li>
                         </ul>
                 </div>
             </div>
@@ -175,18 +186,16 @@
     </div>
 </section>
 <script>
-    // platform = getOsVersion()
-    // if (platform == 1){
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-darwin-amd64"
-    // }else if(platform == 2){
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-windows.exe"
-    // }else{
-    //     document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-linux-amd64"
-    // } 
+    platform = getOsVersion()
+    if (platform == 1){
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-darwin-amd64"
+    }else if(platform == 2){
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-windows.exe"
+    }else{
+        document.getElementById("platform-download").href = "http://www.notr.tech:8000/notr-linux-amd64"
+    } 
 </script>
-    
-    
-<section class="angle-bg sky-bg overlay section-padding" id="price-page">
+  <section class="angle-bg sky-bg overlay section-padding" id="price-page">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
@@ -209,6 +218,7 @@
                     <a href="#download-page" class="button">下载试用</a>
                 </div>
             </div>
+
             <div class="col-xs-12 col-sm-4">
                 <div class="price-table active">
                     <span class="price-info"><span class="ti-crown"></span></span>
@@ -224,6 +234,7 @@
                     <a href="#signinup-page" class="button">立即注册</a>
                 </div>
             </div>
+
             <div class="col-xs-12 col-sm-4">
                 <div class="price-table">
                     <h3 class="text-uppercase price-title">专业版</h3>
@@ -234,59 +245,21 @@
                         <li>支持广域网优化</li>
                     </ul>
                     <hr>
-                    <a href="#" class="button">敬请期待</a>
+                    <a class="button">敬请期待</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
     
-    <section class="gray-bg section-padding" id="download-page">
+  <section class="gray-bg section-padding" id="download-page">
     <div class="container">
         <div class="row">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 text-center">
-                    <div class="page-title">
-                        <h2>下载试用</h2>
-                        <p>Notr目前支持Linux，Mac OS，Windows等多个平台</p>
-                    </div>
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <td>#</td>
-                                <td>操作系统</td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Linux x86_64</td>
-                                <td><a href="/v2/release/notr-linux-amd64">notr-linux-amd64</a></td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>Linux x86</td>
-                                <td><a href="/v2/release/notr-linux-386">notr-linux-386</a></td>
-                            </tr>
-
-                            <tr>
-                                <td>3</td>
-                                <td>OS X</td>
-                                <td><a href="/v2/release/notr-darwin-amd64">notr-darwin-amd64</a></td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
-                    <p><a href="http://www.notr.tech:8000">更多下载</a></p>      
-                </div>
-            </div>
         </div>
     </div>
 </section>
-
-    <div class="footer-bottom ">
+  <hr>
+<div class="footer-bottom ">
     <div class="container">
         <!-- <div class="row">
             <div class="col-xs-12 text-center">
@@ -294,38 +267,23 @@
                 <p>&copy;ICKelin</p>
             </div>
         </div> -->
-        <div class="row text-center">
-            <div class="col-12 col-md">
-                <img class="mb-2" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-                <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+        <div class="row text-left" style="font-size:14px;">
+            <div class="col-md-4">
+                <small class="d-block mb-3 text-muted">&copy; 2019 <a href="https://github.com/ICKelin">ICKelin</a></small>
             </div>
             <div class="col-md-4">
-                <h5>Features</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Cool stuff</a></li>
-                    <li><a class="text-muted" href="#">Random feature</a></li>
-                    <li><a class="text-muted" href="#">Team feature</a></li>
-                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                    <li><a class="text-muted" href="#">Another one</a></li>
-                    <li><a class="text-muted" href="#">Last time</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-            <h5>Resources</h5>
+            <h5>技术支持</h5>
             <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Resource</a></li>
-                <li><a class="text-muted" href="#">Resource name</a></li>
-                <li><a class="text-muted" href="#">Another resource</a></li>
-                <li><a class="text-muted" href="#">Final resource</a></li>
+                <li><a class="text-muted" href="">管理员QQ: 995139094</a></li>
+                <li><a class="text-muted" href="#">QQ群: 775143648</a></li>
             </ul>
             </div>
             <div class="col-md-4">
-                <h5>About</h5>
+                <h5>友情链接</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Team</a></li>
-                    <li><a class="text-muted" href="#">Locations</a></li>
-                    <li><a class="text-muted" href="#">Privacy</a></li>
-                    <li><a class="text-muted" href="#">Terms</a></li>
+                    <li><a class="text-muted" href="https://www.aliyun.com/">阿里云</a></li>
+                    <li><a class="text-muted" href="https://github.com/ICKelin">github</a></li>
+                    <li><a class="text-muted" href="https://weibo.com/2621944791">新浪微博</a></li>
                 </ul>
             </div>
         </div>
@@ -333,15 +291,21 @@
 </div>
 
 
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
-    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="assets/js/vendor/bootstrap.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/contact-form.js"></script>
-    <script src="assets/js/jquery.parallax-1.1.3.js"></script>
-    <script src="assets/js/scrollUp.min.js"></script>
-    <script src="assets/js/magnific-popup.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
+  
+  <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="assets/js/vendor/bootstrap.min.js"></script>
+  <script src="assets/js/owl.carousel.min.js"></script>
+  <script src="assets/js/contact-form.js"></script>
+  <script src="assets/js/jquery.parallax-1.1.3.js"></script>
+  <script src="assets/js/scrollUp.min.js"></script>
+  <script src="assets/js/magnific-popup.min.js"></script>
+  <script src="assets/js/wow.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+</body>
+
 </html>
