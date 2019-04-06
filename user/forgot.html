@@ -1,0 +1,35 @@
+---
+layout: user
+title: 重置密码
+---
+
+<div class="container" style="padding:100px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-3"></div>
+        <div class="col-xs-12 col-md-6">
+            <div class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">重置密码</h1>
+                <label for="txtNewPassword" class="sr-only">注册邮箱</label>
+                <input type="email" id="txtEmail" class="form-control" placeholder="注册邮箱" required autofocus>
+                <p id="hint" class="mt-1" style="color:red"></p>
+                <button class="btn btn-primary mt-2" id="btnForgotPassword">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    btnForgotPassword = document.getElementById("btnForgotPassword")
+
+    btnForgotPassword.onclick = function() {
+        email = document.getElementById("txtEmail").value
+        ctx = {"email":email}
+        ajaxForgotPassword(ctx,
+        function(body){
+            alert("重置邮件已发送，请注意查收")
+        },
+        function(code, error){
+            alert("修改密码失败: " + code, error)
+        })
+    }
+</script>

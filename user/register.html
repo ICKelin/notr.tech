@@ -1,0 +1,59 @@
+---
+layout: user
+title: 用户注册
+---
+
+<div class="container" style="padding:100px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-3"></div>
+        <div class="col-xs-12 col-md-6">
+            <div id = "regPanel">
+                <div style="padding-bottom:10px;">
+                    <h4>注册新用户</h4>
+                </div>
+
+                <div class="form-group">
+                    <input type="input" id = "txt_username" class="form-control" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <input type="email" id = "txt_email" class="form-control" placeholder="电子邮箱">
+                </div>
+                <div class="form-group">
+                    <input type="password" id = "txt_password" class="form-control" placeholder="密码">
+                </div>
+            </div>
+            <span>
+                <button id = "btnReg" class="btn btn-primary">注册</button>
+            </span>
+            <span>
+                <a href="/user/"><button id = "btnLogin" class="btn btn-primary">已有用户登录</button></a>
+            </span>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    btnReg = document.getElementById("btnReg")
+
+    btnReg.onclick = function() {
+        username = document.getElementById("txt_username").value
+        password = document.getElementById("txt_password").value
+        email = document.getElementById("txt_email").value
+
+        ctx = {
+            "username": username,
+            "password":password,
+            "email":email,
+        }
+
+        ajaxRegister(ctx, 
+        function(body){
+            alert("注册成功")
+            location.href="/user"
+        },
+        function(code, error){
+            alert("注册失败: " + code + error)
+        })
+    }
+</script>

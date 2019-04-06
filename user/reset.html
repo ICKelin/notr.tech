@@ -1,0 +1,48 @@
+---
+layout: user
+title: 重置密码
+---
+
+<div class="container" style="padding:100px;">
+    <div class="row">
+        <div class="col-xs-12 col-md-3"></div>
+        <div class="col-xs-12 col-md-6">
+            <div class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">修改密码</h1>
+                <label for="txtNewPassword" class="sr-only">新密码</label>
+                <input type="password" id="txtNewPassword" class="form-control" placeholder="新密码" required autofocus>
+                <button class="btn btn-primary mt-3" id="btnNewPassword">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    btnNewPassword = document.getElementById("btnNewPassword")
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);  //获取url中"?"符后的字符串并正则匹配
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+
+    btnNewPassword.onclick = function() {
+        token = getQueryString("token")
+        newPassword = document.getElementById("txtNewPassword").value
+
+        ajaxResetPassword({"token":token, "new_password":newPassword},
+        function(body){
+            console.log("密码修改成功")
+            location.href = "/user"
+        },
+        function(code, error){
+            alert("修改密码失败: " + code + error)
+        })
+    }
+
+</script>
+    

@@ -1,0 +1,158 @@
+---
+layout: user
+title: 个人中心
+---
+
+<div class="container" style="margin-top:100px">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">个人信息</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">域名管理</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="card">
+                    <div class="card-body">
+                    <p>用户名：<span id = "username"></span></p>
+                    <!-- <p>用户类型: <span id = "type"></span></p> -->
+                    <p>授权码: <span id="access_key"></span>&nbsp;&nbsp;&nbsp;<a href="#refresh" onClick="refreshToken()">刷新</a></p>
+                    <p>专属域名: <span id = "domain"></span></p>
+                    <p>过期时间: <span id = "expired"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                <div class="card">
+                <div class="card-body">
+                    <p>Notr允许自定义域名，如果您自己购买有域名，可以使用自己的域名，详细使用说明可以参考<a href="/docs/#/zh-cn/domain" target="blank">使用个人域名</a></p>
+                    <h5>个人域名列表</h5>
+                    <div id="cname">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">域名</th>
+                            <th scope="col">CNAME</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id = "domain_body">
+                        
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- <button class="btn btn-primary" id="btnAddCName">添加</button> -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cnameModal">
+                    添加域名
+                    </button>
+                    <div class="modal fade" id="cnameModal" tabindex="-1" role="dialog" aria-labelledby="cnameModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="cnameModalLabel">添加域名</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            <input type="text" class="form-control" id="cnameval">
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancel">取消</button>
+                            <button type="button" class="btn btn-primary" id="btnAddCName">提交</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content" id="pills-tabContent">
+    </div>
+</div>
+
+<script>
+    // 获取cname列表
+    txtUsername = document.getElementById("username")
+    txtAccessKey = document.getElementById("access_key")
+    txtDomain = document.getElementById("domain")
+    txtExpired = document.getElementById("expired")
+    btnAddCName = document.getElementById("btnAddCName")
+
+    username = Cookies.get("username")
+    accesskey = Cookies.get("accessKey")
+    expired = Cookies.get("expiredIn")
+
+    date = new Date(expired * 1000)
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    D = date.getDate() + ' ';
+    h = date.getHours() + ':';
+    m = date.getMinutes() + ':';
+    s = date.getSeconds(); 
+
+    txtUsername.innerHTML = username
+    txtAccessKey.innerHTML = accesskey
+    txtDomain.innerHTML = username + ".notr.tech"
+    txtExpired.innerHTML = (Y+M+D+h+m+s)
+
+
+    btnAddCName.onclick = function() {
+        cname = document.getElementById("cnameval").value
+        ajaxAddCnames({"cnames":[cname]}, accesskey, 
+        function(body){
+            getCnames()
+            alert("添加域名成功")
+        },
+        function(code, error){
+            alert("添加域名失败： " + code + error)
+        })
+    }
+
+    getCnames = function() {
+        ajaxCnames(accesskey, 
+        function(body) {
+            cnames = body.cname
+            console.log("cnames", cnames)
+            document.getElementById("domain_body").innerHTML = ""
+            for (i = 0; i < cnames.length; i++) {
+                console.log("append")
+                $("table tbody").append('<tr><td>'+(i+1)+'</td><td>'+cnames[i]+'</td><td>'+username+'.notr.tech</td><td><a href="#delete" id="'+cnames[i]+'" onClick="delCname(this.id)">删除</a></td></tr>')
+            }
+        },
+        function(code, message){
+            alert("获取域名列表失败: " + code + message)
+        }
+    )
+    }
+
+
+    delCname = function(domain) {
+        ajaxDelCname(domain, accesskey, function(body){
+            getCnames()
+            alert("删除域名成功")
+        },
+        function(code, message){
+            alert("删除域名失败: ", domain, code, message)
+        })
+    }
+
+    refreshToken = function() {
+        ajaxRefreshToken(accesskey,
+        function(body) {
+            Cookies.set("accessKey", body.access_key)
+            alert("更新授权码成功")
+            location.href="/user/dashboard"
+        },
+        function(code, error) {
+            alert("更新授权码失败: " + code + error)
+        })
+    }
+
+</script>

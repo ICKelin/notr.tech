@@ -13,7 +13,7 @@
                                     <form>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-lg" id = "url" />
-                                            <a href="#download" class="button" style="margin-top:0px;">下载试用</a>
+                                            <a href="#download-page" id="download-btn" class="button" style="margin-top:0px;">下载试用</a>
                                         </div> 
                                     </form>
                                 </div>
@@ -32,8 +32,11 @@
                                         </p>
                                     </div>
                                     <div class="caption-button" data-animation="animated fadeInUp">
-                                        <a href="#download-page" class="button">马上注册</a>
+                                        <a href="/user" class="button">马上注册</a>
                                     </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <img src="assets/images/hq.jpg" class="img-rounded">
                                 </div>
                             </div>
                         </div>
@@ -49,7 +52,7 @@
                                         </p>
                                     </div>
                                     <div class="caption-button" data-animation="animated fadeInUp">
-                                        <a href="#download-page" class="button">立即购买</a>
+                                        <a href=/user class="button">立即使用</a>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
@@ -66,11 +69,14 @@
 <script>
     platform = getOsVersion()
     if (platform == 1){
-    document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-darwin-amd64"
+        document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-darwin-amd64"
+        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-darwin-amd64"
     }else if(platform == 2){
-    document.getElementById("url").value = "http://www.notr.tech:8000/notr-windows.exe"
+        document.getElementById("url").value = "http://www.notr.tech:8000/notr-windows.exe"
+        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-windows.exe"
     }else{
-    document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-linux-amd64"
+        document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-linux-amd64"
+        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-linux-amd64"
     } 
 </script>
     

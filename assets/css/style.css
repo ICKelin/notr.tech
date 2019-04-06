@@ -987,6 +987,25 @@ preloader
     }
 }
 
+/* self define style*/
 .list-font {
     font-size: 14px;
+}
+
+.download-title {
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+.download-table {
+    text-align:left;
+    padding: 50px 40px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:rgb(211, 194, 194);
+    background-color: #ffffff;
+    color: #515656;
+    position: relative;
+    margin-top: 20px
 }

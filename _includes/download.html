@@ -1,0 +1,47 @@
+<section class="section-padding" id="download-page">
+    <div class="container">
+        <div class="download-title">
+            <h2>只需3步即可使用Notr服务</h2>
+        </div>
+        <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <div class="download-table">
+                        <h4>1. 下载</h4>
+                        <hr>
+                        <div id="download-url"></div>
+                    </div>
+                </div>
+        
+                <div class="col-xs-12 col-sm-4">
+                    <div class="download-table">
+                        <h4>2. 设置授权码</h4>
+                        <hr>
+                        <p>windows用户可以直接双击运行进行设置，非注册用户可以忽略。</p>
+                        <code>$ notr -auth YOUR_AUTH_KEY</code>
+                    </div>
+                </div>
+        
+                <div class="col-xs-12 col-sm-4">
+                    <div class="download-table">
+                        <div>
+                            <h4>3. 启动客户端</h4>
+                            <hr>
+                            <code>$ notr -http 8000</code><br>
+                            <code>$ notr -https 4430</code><br>
+                            <code>$ notr -tcp 3389,22</code><br>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</section>
+<script>
+    platform = getOsVersion()
+    if (platform == 1){
+        document.getElementById("download-url").innerHTML = "<code>wget http://www.notr.tech:8000/notr-darwin-amd64</code>"
+    }else if(platform == 2){
+        document.getElementById("download-url").innerHTML = `<a href="http://www.notr.tech:8000/notr-windows.exe" class="button">Windows X86_64 下载</a>`
+    }else{
+        document.getElementById("download-url").innerHTML = "<code>wget http://www.notr.tech:8000/notr-linux-amd64</code>"
+    } 
+</script>
