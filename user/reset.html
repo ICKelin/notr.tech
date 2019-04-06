@@ -37,7 +37,7 @@ title: 重置密码
         ajaxResetPassword({"token":token, "new_password":newPassword},
         function(body){
             console.log("密码修改成功")
-            location.href = "/user"
+            location.href = "/user/"
         },
         function(code, error){
             alert("修改密码失败: " + code + error)

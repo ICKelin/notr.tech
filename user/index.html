@@ -18,14 +18,14 @@ title: 用户登录
             </div>
 
             <span>
-                <a href="/user/register"><button id = "btnReg" class="btn btn-primary">注册新用户</button></a>
+                <a href="/user/register.html"><button id = "btnReg" class="btn btn-primary">注册新用户</button></a>
             </span>
 
             <span>
                 <button id = "btnLogin" class="btn btn-primary">登录</button>
             </span>
             <span>
-                <a href="/user/forgot">忘记密码</a>
+                <a href="/user/forgot.html">忘记密码</a>
             </span>
         </div>
         
@@ -44,7 +44,7 @@ title: 用户登录
                 Cookies.set("userId", user.id)
                 Cookies.set("accessKey", user.access_key)
                 Cookies.set("expiredIn", user.expired_in)
-                location.href="/user/dashboard"
+                location.href="/user/dashboard.html"
             },
             function(code, message) {
                 alert("登录失败: " + code + message)

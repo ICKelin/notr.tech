@@ -148,7 +148,7 @@ title: 个人中心
         function(body) {
             Cookies.set("accessKey", body.access_key)
             alert("更新授权码成功")
-            location.href="/user/dashboard"
+            location.href="/user/dashboard.html"
         },
         function(code, error) {
             alert("更新授权码失败: " + code + error)
