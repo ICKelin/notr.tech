@@ -1,7 +1,6 @@
 * Notr指南
 
   * [快速开始](zh-cn/quickstart.md)
-  * [用户类型与授权码](zh-cn/token.md)
   * [HTTP隧道](zh-cn/http.md)
   * [HTTPS隧道](zh-cn/https.md)
   * [TCP隧道](zh-cn/tcp.md)
