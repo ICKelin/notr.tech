@@ -1,4 +1,5 @@
 api = "https://www.notr.tech/api/v2"
+appKey = "hGBT3OI0QiCFzJUXXJ0b0A=="
 code_success = 10000
 
 verify = function(body) {
@@ -41,7 +42,8 @@ ajaxRegister = function(ctx, onSuccess, onFail) {
         url: api + "/user/signup",
         method: "post",
         headers:{
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "App-Key": appKey
         },
         data: {
             "username": ctx.username,
