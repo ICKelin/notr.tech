@@ -9,67 +9,164 @@ title: 个人中心
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">个人信息</a>
             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">域名管理</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-application" role="tab" aria-controls="v-pills-messages" aria-selected="false">私有化授权</a>
             </div>
         </div>
         <div class="col-9">
             <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <div class="card">
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="card">
+                        <div class="card-body">
+                        <p>用户名：<span id = "username"></span>&nbsp;&nbsp;<a target="blank" href="https://item.taobao.com/item.htm?spm=a230r.1.14.30.57bc5c9dYpPukf&id=587788740771">续费</a></p>
+                        <!-- <p>用户类型: <span id = "type"></span></p> -->
+                        <p>授权码: <span id="access_key"></span>&nbsp;&nbsp;&nbsp;<a href="#refresh" onClick="refreshToken()">刷新</a></p>
+                        <p>专属域名: <span id = "domain"></span></p>
+                        <p>过期时间: <span id = "expired"></span>&nbsp;<b>(邮箱验证成功之后即可获得5天免费试用)</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <div class="card">
                     <div class="card-body">
-                    <p>用户名：<span id = "username"></span></p>
-                    <!-- <p>用户类型: <span id = "type"></span></p> -->
-                    <p>授权码: <span id="access_key"></span>&nbsp;&nbsp;&nbsp;<a href="#refresh" onClick="refreshToken()">刷新</a></p>
-                    <p>专属域名: <span id = "domain"></span></p>
-                    <p>过期时间: <span id = "expired"></span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                <div class="card">
-                <div class="card-body">
-                    <p>Notr允许自定义域名，如果您自己购买有域名，可以使用自己的域名，详细使用说明可以参考<a href="/docs/#/zh-cn/domain" target="blank">使用个人域名</a></p>
-                    <h5>个人域名列表</h5>
-                    <div id="cname">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">域名</th>
-                            <th scope="col">CNAME</th>
-                            <th scope="col">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id = "domain_body">
-                        
-                        </tbody>
-                    </table>
-                    </div>
-                    <!-- <button class="btn btn-primary" id="btnAddCName">添加</button> -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cnameModal">
-                    添加域名
-                    </button>
-                    <div class="modal fade" id="cnameModal" tabindex="-1" role="dialog" aria-labelledby="cnameModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="cnameModalLabel">添加域名</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <p>Notr允许自定义域名，如果您自己购买有域名，可以使用自己的域名，详细使用说明可以参考<a href="/docs/#/zh-cn/domain" target="blank">使用个人域名</a></p>
+                        <h5>个人域名列表</h5>
+                        <div id="cname">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">域名</th>
+                                    <th scope="col">CNAME</th>
+                                    <th scope="col">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id = "domain_body">
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- <button class="btn btn-primary" id="btnAddCName">添加</button> -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cnameModal">
+                        添加域名
+                        </button>
+                        <div class="modal fade" id="cnameModal" tabindex="-1" role="dialog" aria-labelledby="cnameModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="cnameModalLabel">添加域名</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                <input type="text" class="form-control" id="cnameval">
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancel">取消</button>
+                                <button type="button" class="btn btn-primary" id="btnAddCName">提交</button>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                            <input type="text" class="form-control" id="cnameval">
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancel">取消</button>
-                            <button type="button" class="btn btn-primary" id="btnAddCName">提交</button>
                             </div>
                         </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-application" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <div>
+                                <p>Notr允许经过授权的应用进行私有化部署，您可以联系管理员开通并将Notr的服务端程序部署在您的云服务器上，更多信息，请查看阅读<a href="http://www.notr.tech/docs/#/zh-cn/license">私有化部署文档</a></p>
+                                <h5>应用列表</h5>
+                                <div id="apps">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">应用名称</th>
+                                            <th scope="col">AppKey</th>
+                                            <th scope="col">有效期</th>
+                                            <th scope="col">用户数</th>
+                                            <th scope="col">实例数</th>
+                                            <th scope="col">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id = "app_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appModal">
+                                    创建应用
+                                </button>
+                            </div>
+
+                            <div style="margin-top:50px">
+                                <h5>私有账号列表</h5>
+                                <div id="users">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">用户名</th>
+                                            <th scope="col">所属应用</th>
+                                            <th scope="col">授权码</th>
+                                            <th scope="col">分配带宽</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id = "user_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="appModal" tabindex="-1" role="dialog" aria-labelledby="appModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="appModalLabel">创建应用</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label>应用名称</label>
+                                            <input type="text" class="form-control" id="appname">
+                                            <label>备注</label>
+                                            <input type="text" class="form-control" id="appcomment">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="btnCreateApp">提交</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="userModalLabel">创建用户</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label>用户名</label>
+                                            <input type="text" class="form-control" id="appUsername">
+                                            <label>限速(mbps)</label>
+                                            <input type="text" class="form-control" id="appUserRate">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancel">取消</button>
+                                            <button type="button" class="btn btn-primary" id="btnCreateAppUser">提交</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
     </div>
@@ -84,10 +181,14 @@ title: 个人中心
     txtDomain = document.getElementById("domain")
     txtExpired = document.getElementById("expired")
     btnAddCName = document.getElementById("btnAddCName")
+    btnCreateApp = document.getElementById("btnCreateApp")
+    btnCreateAppUser = document.getElementById("btnCreateAppUser")
 
     username = Cookies.get("username")
     accesskey = Cookies.get("accessKey")
     expired = Cookies.get("expiredIn")
+
+    var opappid = ""
 
     date = new Date(expired * 1000)
     Y = date.getFullYear() + '-';
@@ -102,6 +203,16 @@ title: 个人中心
     txtDomain.innerHTML = username + ".notr.tech"
     txtExpired.innerHTML = (Y+M+D+h+m+s)
 
+    parseTimestamp = function(seconds) {
+        date = new Date(seconds * 1000)
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds(); 
+        return (Y+M+D+h+m+s)
+    }
 
     btnAddCName.onclick = function() {
         cname = document.getElementById("cnameval").value
@@ -115,23 +226,40 @@ title: 个人中心
         })
     }
 
-    getCnames = function() {
-        ajaxCnames(accesskey, 
+    btnCreateApp.onclick = function() {
+        appname = document.getElementById("appname").value
+        appcomment = document.getElementById("appcomment").value
+
+        ajaxCreateApp({"appname":appname, "comment": appcomment},accesskey,
         function(body) {
-            cnames = body.cname
-            console.log("cnames", cnames)
-            document.getElementById("domain_body").innerHTML = ""
-            for (i = 0; i < cnames.length; i++) {
-                console.log("append")
-                $("table tbody").append('<tr><td>'+(i+1)+'</td><td>'+cnames[i]+'</td><td>'+username+'.notr.tech</td><td><a href="#delete" id="'+cnames[i]+'" onClick="delCname(this.id)">删除</a></td></tr>')
-            }
+            alert("创建应用成功")
+            getApplist()
         },
-        function(code, message){
-            alert("获取域名列表失败: " + code + message)
-        }
-    )
+        function(code, error){
+            alert("创建应用失败: " + code + error)
+        })
     }
 
+    btnCreateAppUser.onclick = function() {
+        appUsername = document.getElementById("appUsername").value
+        appUserRate = document.getElementById("appUserRate").value
+        createAppUser(opappid, appUsername, parseInt(appUserRate))
+    }
+
+    getCnames = function() {
+        ajaxCnames(accesskey, 
+            function(body) {
+                cnames = body.cname
+                document.getElementById("domain_body").innerHTML = ""
+                for (i = 0; i < cnames.length; i++) {
+                    $("#domain_body").append('<tr><td>'+(i+1)+'</td><td>'+cnames[i]+'</td><td>'+username+'.notr.tech</td><td><a href="#delete" id="'+cnames[i]+'" onClick="delCname(this.id)">删除</a></td></tr>')
+                }
+            },
+            function(code, message){
+                alert("获取域名列表失败: " + code + message)
+            }
+        )
+    }
 
     delCname = function(domain) {
         ajaxDelCname(domain, accesskey, function(body){
@@ -154,5 +282,92 @@ title: 个人中心
             alert("更新授权码失败: " + code + error)
         })
     }
+
+    getApplist = function() {
+        ajaxGetAppList(accesskey,
+        function(body) {
+            document.getElementById("app_body").innerHTML = ""
+            if (body != null) {
+                idx = 0
+                for (i = 0; i < body.length; i++) {
+                    app = body[i]
+                    append = `
+                        <tr>
+                            <td>`+(idx+1)+`</td>
+                            <td>`+app.app_name+`</td>
+                            <td>`+app.app_key+`</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>`
+                    // 获取license
+                    ajaxGetAppLicense(accesskey, body[i].id,
+                    function(license){
+                        if (license != null) {
+                           append = `
+                            <tr>
+                                <td>`+(idx+1)+`</td>
+                                <td>`+app.app_name+`</td>
+                                <td>`+app.app_key+`</td>
+                                <td>`+parseTimestamp(license.expired_in)+`</td>
+                                <td>`+license.user_limit+`</td>
+                                <td>`+license.instance_limit+`</td>
+                                <td><a href="#create" id="`+app.id+`" onclick = "createUserModalClick(this.id)" data-toggle="modal" data-target="#userModal" id="this.id" >添加用户`+`</a></td>
+                            </tr>`
+                        }
+                        idx++
+                        $("#app_body").append(append)
+                    },
+                    function(error, message) {
+                        console.log(error, message)
+                    })
+                }
+            }
+        },
+        function(code, error) {
+            alert("获取应用列表失败: ", code, " ", error)
+        })
+    }
+
+    createAppUser = function(appid, username, rate) {
+        ajaxCreateAppUser({"app_id": appid, "username":username, "rate": rate}, accesskey,
+        function(body) {
+            alert("添加用户成功")
+            // 获取用户列表
+            getUserCreated()
+        },
+        function(error, message) {
+            alert("添加用户 ", username, " 失败: ", error, " ", message)
+        })
+    }
+
+    getUserCreated = function() {
+        ajaxGetUserCreated(accesskey,
+        function(body){
+            document.getElementById("user_body").innerHTML = ""
+            c = 1
+            if (body != null) {
+                for (var appname in body) {
+                    for (i = 0; i < body[appname].length; i++) {
+                        $("#user_body").append('<tr><td>'+c+'</td><td>'+body[appname][i].username+'</td><td>'+appname+'</td><td>'+body[appname][i].access_key+'</td><td>'+body[appname][i].rate+' mb/s</td></tr>')
+                        c++
+                    }
+                }
+            }
+        },
+        function(error, message){
+            
+        })
+    }
+
+    createUserModalClick = function(appid) {
+        opappid = appid
+    }
+
+
+    getCnames()
+    getApplist()
+    getUserCreated()
 
 </script>
