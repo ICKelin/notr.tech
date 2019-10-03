@@ -1,0 +1,210 @@
+---
+layout: article
+title: 为提高英语，花两个小时写了个爬取voa上的英文新闻
+---
+      <div class="mume markdown-preview pad">
+
+          <h2>{{ page.title }}</h2>
+      <p>&#x4E3A;&#x63D0;&#x9AD8;&#x82F1;&#x8BED;&#xFF0C;&#x82B1;&#x4E24;&#x4E2A;&#x5C0F;&#x65F6;&#x5199;&#x4E86;&#x4E2A;&#x722C;&#x53D6;voa&#x4E0A;&#x7684;&#x82F1;&#x6587;&#x65B0;&#x95FB;&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x4E86;goquery&#x8FD9;&#x4E2A;&#x5E93;&#xFF0C;&#x6CA1;&#x5176;&#x4ED6;&#x7684;&#x4E86;&#xFF0C;&#x5173;&#x952E;&#x662F;&#x80FD;&#x591F;&#x89E3;&#x51B3;&#x6211;&#x81EA;&#x8EAB;&#x7684;&#x9700;&#x6C42;&#x3002;&#x5982;&#x679C;&#x60A8;&#x5F88;&#x5173;&#x6CE8;&#x6027;&#x80FD;&#xFF0C;&#x6216;&#x8005;&#x975E;&#x5E38;&#x7EA0;&#x7ED3;&#x4E0E;&#x4EE3;&#x7801;&#x7684;&#x7F8E;&#x89C2;&#xFF0C;&#x90A3;&#x4E48;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x53EF;&#x80FD;&#x4F1A;&#x88AB;&#x55B7;&#xFF0C;anyway&#xFF0C;&#x6211;&#x8BA4;&#x4E3A;&#x80FD;&#x591F;&#x7528;&#x6700;&#x5FEB;&#x7684;&#x65B9;&#x5F0F;&#x89E3;&#x51B3;&#x6211;&#x95EE;&#x9898;&#x7684;&#x5C31;ok&#x4E86;&#xFF0C;&#x6BD5;&#x7ADF;&#x6211;&#x5199;&#x8FD9;&#x4E2A;&#x7684;&#x76EE;&#x7684;&#x662F;&#x89E3;&#x51B3;&#x5B9E;&#x9645;&#x7684;&#x95EE;&#x9898;&#x3002;</p>
+<p>&#x9879;&#x76EE;&#x90E8;&#x7F72;&#x5728;&#x6211;&#x7684;&#x6811;&#x8393;&#x6D3E;&#x4E0A;&#xFF0C;&#x4F7F;&#x7528;<a href="https://www.notr.tech">Notr</a>&#x8FDB;&#x884C;&#x5185;&#x7F51;&#x7A7F;&#x900F;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;<a href="http://voavoa.notr.tech">voa</a> &#x6216;&#x8005;<a href="http://voavoa.dahuizong.com">voa</a> &#x8FDB;&#x884C;&#x8BBF;&#x95EE;&#x3002;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;io/ioutil&quot;
+	&quot;log&quot;
+	&quot;os&quot;
+	&quot;strconv&quot;
+	&quot;strings&quot;
+	&quot;time&quot;
+
+	&quot;github.com/gin-gonic/gin&quot;
+
+	&quot;github.com/PuerkitoBio/goquery&quot;
+)
+
+var (
+	defaultSite  = &quot;http://www.51voa.com&quot;
+	defaultEntry = &quot;http://www.51voa.com/Technology_Report_1.html&quot;
+	defaultDir   = &quot;./news&quot;
+)
+
+type VOA struct {
+	Title    string `json:&quot;title&quot;`
+	VoiceUrl string `json:&quot;voice_url&quot;`
+	Content  string `json:&quot;content&quot;`
+}
+
+func main() {
+	go spider(defaultEntry)
+
+	server := gin.Default()
+	server.GET(&quot;/&quot;, func(ctx *gin.Context) {
+		dir, err := os.Stat(defaultDir)
+		if err != nil {
+			log.Printf(&quot;stat ./ fail: %v\n&quot;, err)
+			return
+		}
+
+		if dir.IsDir() {
+			files, err := ioutil.ReadDir(dir.Name())
+			if err != nil {
+				log.Printf(&quot;read dir fail: %v\n&quot;, err)
+				return
+			}
+
+			list := &quot;&quot;
+			for _, file := range files {
+				if strings.HasSuffix(file.Name(), &quot;.html&quot;) {
+					name := strings.TrimSuffix(file.Name(), &quot;.html&quot;)
+
+					sp := strings.Split(name, &quot;-&quot;)
+					if len(sp) &gt; 0 {
+						// ignore last number
+						if _, err := strconv.Atoi(sp[len(sp)-1]); err == nil {
+							sp = sp[:len(sp)-1]
+						}
+						name = strings.Join(sp, &quot; &quot;)
+						item := fmt.Sprintf(&quot;&lt;li&gt;&lt;a href=\&quot;%s/%s\&quot;&gt;%s&lt;/a&gt;&quot;, defaultDir, file.Name(), name)
+						list += item
+					}
+				}
+			}
+
+			indextemp := fmt.Sprintf(index, list)
+			ctx.Writer.Write([]byte(indextemp))
+		}
+	})
+
+	server.Static(&quot;/news&quot;, &quot;./news&quot;)
+
+	server.Run(&quot;:8000&quot;)
+}
+
+// download news
+// entry =&gt; #list.li.a =&gt; get title and detail url
+// detail =&gt; #mp3.href
+// detail =&gt; #content
+// store without VOA_Special_English
+func spider(entry string) {
+	for {
+		doc, err := goquery.NewDocument(entry)
+		if err != nil {
+			fmt.Println(&quot;open document fail: &quot;, err)
+                         time.Sleep(time.Second * 10)
+                         // fix: do not return
+			continue
+		}
+
+		doc.Find(&quot;#list&quot;).Find(&quot;li&quot;).Find(&quot;a&quot;).Each(func(idx int, element *goquery.Selection) {
+			href, exist := element.Attr(&quot;href&quot;)
+			if !exist {
+				fmt.Println(&quot;element not contains href attribute&quot;)
+				return
+			}
+
+			title, err := element.Html()
+			if err != nil {
+				fmt.Println(&quot;element not conains html content: &quot;, err)
+				return
+			}
+
+			url := defaultSite + href
+			detail, err := goquery.NewDocument(url)
+			if err != nil {
+				fmt.Println(&quot;got detail page fail: &quot;, err)
+				return
+			}
+
+			mp3 := detail.Find(&quot;#mp3&quot;)
+			mp3url, exist := mp3.Attr(&quot;href&quot;)
+			if !exist {
+				fmt.Println(&quot;not contains mp3 download url&quot;)
+				return
+			}
+
+			content, err := detail.Find(&quot;#content&quot;).Html()
+			if err != nil {
+				fmt.Println(&quot;not contains voa news content: &quot;, err)
+				return
+			}
+
+			voa := &amp;VOA{
+				Title:    title,
+				VoiceUrl: mp3url,
+				Content:  content,
+			}
+
+			prefix := &quot;VOA_Special_English&quot;
+			index := strings.LastIndex(href, &quot;VOA_Special_English&quot;) + len(prefix)
+
+			href = href[index:]
+
+			body := fmt.Sprintf(template, voa.Title, voa.Title, voa.VoiceUrl, voa.Content)
+
+			fp, err := os.Create(defaultDir + &quot;/&quot; + href)
+			if err != nil {
+				fmt.Println(&quot;create file fail: &quot;, err)
+				return
+			}
+			defer fp.Close()
+			fp.Write([]byte(body))
+		})
+
+		time.Sleep(time.Hour * 24)
+	}
+}
+
+var template = `
+	&lt;html&gt;
+		&lt;title&gt;%s&lt;/title&gt;	
+		&lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css&quot; integrity=&quot;sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB&quot; crossorigin=&quot;anonymous&quot;&gt;    
+		&lt;meta name=&quot;referrer&quot; content=&quot;never&quot;&gt;
+		&lt;body&gt;
+			&lt;div class=&quot;container&quot; style=&quot;padding:50px&quot;&gt;
+				&lt;h2&gt;%s&lt;/h2&gt;
+				&lt;p&gt;
+					&lt;audio src=&quot;%s&quot; controls=&quot;controls&quot;&gt;
+					Your browser does not support the audio element.
+					&lt;/audio&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					%s
+				&lt;p&gt;
+			&lt;/div&gt;
+		&lt;/body&gt;
+	&lt;/html&gt;
+`
+
+var index = `
+	&lt;html&gt;
+	&lt;title&gt;voa article&lt;/title&gt;	
+	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css&quot; integrity=&quot;sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB&quot; crossorigin=&quot;anonymous&quot;&gt;    
+
+	&lt;body&gt;
+		&lt;div class=&quot;container &quot;&gt;
+			&lt;h2&gt;&#x65B0;&#x95FB;&#x5217;&#x8868;&lt;/h2&gt;
+			&lt;p&gt;
+				&lt;ul&gt;
+					%s
+				&lt;/ul&gt;
+			&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+	&lt;/html&gt;
+`
+
+</code></pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

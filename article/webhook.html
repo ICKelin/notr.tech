@@ -1,0 +1,66 @@
+---
+layout: article
+title: 使用Notr测试webhook
+---
+      <div class="mume markdown-preview pad">
+          <h2>{{ page.title }}</h2>
+      <p>&#x5728;&#x4E4B;&#x524D;&#x7684;<a href="https://juejin.im/post/5cf3634ae51d455cd73ba039">&#x6587;&#x7AE0;</a>&#x5F53;&#x4E2D;&#xFF0C;&#x57FA;&#x4E8E;websocket&#x5B9E;&#x73B0;&#x4E86;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;pub&#x548C;sub&#x6A21;&#x578B;&#xFF0C;&#x4F46;&#x662F;&#x540E;&#x9762;&#x6CA1;&#x6709;&#x63D0;&#x4F9B;&#x4F7F;&#x7528;&#x573A;&#x666F;&#xFF0C;&#x56DE;&#x5230;&#x6587;&#x7AE0;&#x7684;&#x5F00;&#x5934;&#xFF0C;&#x4E00;&#x5F00;&#x59CB;&#x5199;&#x8FD9;&#x4E2A;&#x662F;&#x78B0;&#x5230;&#x4E00;&#x4E2A;&#x9700;&#x8981;&#x505A;&#x7A0B;&#x5E8F;&#x81EA;&#x52A8;&#x66F4;&#x65B0;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x5BF9;&#x65B9;&#x5E0C;&#x671B;&#x6211;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x89E3;&#x51B3;&#x601D;&#x8DEF;&#x3002;&#x6709;&#x4E86;&#x4E4B;&#x524D;&#x7684;&#x79EF;&#x7D2F;&#xFF0C;&#x73B0;&#x5728;&#x53EF;&#x4EE5;&#x5C1D;&#x8BD5;&#x914D;&#x5408;&#x8FD9;&#x4E2A;&#x5E94;&#x7528;&#x573A;&#x666F;&#x8FDB;&#x884C;&#x4E00;&#x8F6E;&#x5B9E;&#x9A8C;&#x3002;</p>
+<h2 class="mume-header" id="github-webhook%E9%85%8D%E7%BD%AE">github webhook&#x914D;&#x7F6E;</h2>
+
+<p>&#x4EE5;github&#x4E3A;&#x4F8B;&#xFF0C;GitHub&#x8FD0;&#x884C;&#x6307;&#x5B9A;&#x4E8B;&#x4EF6;&#x53D1;&#x751F;&#x65F6;&#xFF0C;&#x901A;&#x77E5;&#x901A;&#x8FC7;HTTP&#x7684;POST&#x8BF7;&#x6C42;&#x8C03;&#x7528;&#x5916;&#x90E8;&#x670D;&#x52A1;&#x3002;&#xFF0C;github&#x7684;webhook&#x5728;&#x9875;&#x9762;&#x4E0A;&#x6709;&#x89E3;&#x91CA;&#xFF1A;</p>
+<p><code>Webhooks allow external services to be notified when certain events happen. When the specified events happen, we&#x2019;ll send a POST request to each of the URLs you provide. Learn more in our Webhooks Guide.</code></p>
+<p>&#x90A3;&#x4E48;&#x5148;&#x914D;&#x7F6E;&#x597D;github&#x7684;webhook&#xFF0C;&#x56DE;&#x8C03;&#x7684;url&#x586B;<code>http://webhook.notr.tech/github?topic=common</code></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/6/4/16b20fe00221fe8f?w=2110&amp;h=1528&amp;f=png&amp;s=293544" alt></p>
+<h2 class="mume-header" id="broker%E6%B7%BB%E5%8A%A0%E6%8E%A5%E5%8F%A3">broker&#x6DFB;&#x52A0;&#x63A5;&#x53E3;</h2>
+
+<p>webhook&#x914D;&#x7F6E;&#x5B8C;&#x6210;&#x4E86;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x9700;&#x8981;&#x7ED9;broker&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x9488;&#x5BF9;webhook&#x7684;&#x5904;&#x7406;&#x63A5;&#x53E3;</p>
+<pre data-role="codeBlock" data-info="golang" class="language-golang"><code>func (b *Broker) onGithub(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	r.Body.Close()
+
+	topic := r.FormValue(&quot;topic&quot;)
+	msg := string(body)
+
+	log.Printf(&quot;recv publish topic: %s msg: %s\n&quot;, topic, string(body))
+
+	b.muEntry.RLock()
+	subscribers := b.entry[topic]
+	b.muEntry.RUnlock()
+
+	if subscribers == nil {
+		// drop message once no subscriber
+		// TODO: store msg
+		return
+	}
+
+	for _, s := range subscribers {
+		s.push(msg)
+	}
+}
+
+</code></pre><h2 class="mume-header" id="%E6%B5%8B%E8%AF%95">&#x6D4B;&#x8BD5;</h2>
+
+<p>&#x63A5;&#x4E0B;&#x6765;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x6D4B;&#x8BD5;:</p>
+<ol>
+<li>&#x542F;&#x52A8;broker</li>
+<li>&#x542F;&#x52A8;publisher</li>
+<li>&#x66F4;&#x65B0;&#x9488;&#x5BF9;&#x4EE3;&#x7801;&#x5E93;&#x8FDB;&#x884C;&#x4FEE;&#x6539;&#x6216;&#x8005;&#x5408;&#x5E76;&#x7B49;&#x4EFB;&#x4F55;&#x64CD;&#x4F5C;&#xFF0C;&#x6211;&#x8FD9;&#x91CC;&#x4EC5;&#x4EC5;&#x662F;add webhook</li>
+</ol>
+<p>&#x7ED3;&#x679C;&#xFF1A;</p>
+<p>broker&#x6536;&#x5230;github&#x8C03;&#x7528;&#x7684;&#x6D88;&#x606F;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/6/4/16b21046d8c6dfac?w=1794&amp;h=684&amp;f=png&amp;s=274549" alt="broker"></p>
+<p>subscriber&#x83B7;&#x53D6;&#x5230;broker&#x63A8;&#x9001;&#x7684;&#x6D88;&#x606F;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/6/4/16b2104fb3c46c8f?w=1452&amp;h=624&amp;f=png&amp;s=193395" alt="subscriber"></p>
+<h2 class="mume-header" id="%E6%9C%80%E5%90%8E">&#x6700;&#x540E;</h2>
+
+<p>&#x5728;&#x5F00;&#x53D1;&#x6D4B;&#x8BD5;&#x9636;&#x6BB5;&#xFF0C;broker&#x548C;subscriber&#x90FD;&#x5728;&#x6211;&#x672C;&#x673A;&#x8FD0;&#x884C;&#x7684;&#xFF0C;&#xFF0C;&#x4F46;&#x662F;github&#x8BBE;&#x7F6E;&#x7684;webhook url&#x662F;http://webhook.notr.tech&#xFF0C;&#x660E;&#x663E;&#x662F;&#x8BBF;&#x95EE;&#x4E0D;&#x4E86;&#x6211;&#x672C;&#x673A;&#x7684;&#xFF0C;&#x4E3A;&#x4E86;&#x5728;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x4E3A;&#x4E86;&#x66F4;&#x52A0;&#x4E13;&#x6CE8;&#x4E8E;&#x5F00;&#x53D1;&#xFF0C;&#x6211;&#x7528;&#x4E86;<a href="http://www.notr.tech">notr&#x5185;&#x7F51;&#x7A7F;&#x900F;</a>&#x8FD9;&#x6B3E;&#x5DE5;&#x5177;&#xFF0C;&#x8BA9;github&#x5728;&#x8C03;&#x7528;webhook.notr.tech&#x65F6;&#xFF0C;&#x76F8;&#x5F53;&#x4E8E;github&#x76F4;&#x63A5;&#x8BBF;&#x95EE;&#x6211;&#x672C;&#x673A;http://127.0.0.1:80&#xFF0C;&#x5728;&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;/&#x5C0F;&#x7A0B;&#x5E8F;&#xFF0C;&#x6216;&#x8005;&#x9700;&#x8981;&#x7B2C;&#x4E09;&#x65B9;&#x56DE;&#x8C03;&#x7684;&#x573A;&#x666F;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x9700;&#x8981;&#x53EF;&#x4EE5;&#x5C1D;&#x8BD5;&#x4F7F;&#x7528;notr&#x5185;&#x7F51;&#x7A7F;&#x900F;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/6/4/16b210f3b1f27712?w=1298&amp;h=594&amp;f=png&amp;s=111269" alt="notr"></p>
+
+      </div>
+      

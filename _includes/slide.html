@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                 <div id="caption_slide" class="carousel slide caption-slider" data-ride="carousel">
                     <div class="carousel-inner" role="listbox">
-                        <div class="item active row">
+                        <!-- <div class="item active row">
                             <div class="v-center">
                                 <div class="col-xs-12 col-md-3">
                                 </div>
@@ -19,8 +19,50 @@
                                 </div>
                                 <div class="col-xs-12 col-md-3"></div>
                             </div>
+                        </div> -->
+                        <div class="item row active">
+                            <div class="v-center">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="caption-title" data-animation="animated fadeInUp">
+                                        <h2>简单易用的内网穿透</h2>
+                                    </div>
+                                    <div class="caption-desc" data-animation="animated fadeInUp">
+                                        <p>
+                                            跨平台，无论是PC，Mac，Linux，树莓派，都只需要一行命令，即可完成内网映射，我们会根据用户名给你返回一个全球域名，无论在任何地方都可以通过这个域名访问到您的本地。
+                                        </p>
+                                    </div>
+                                    <div class="caption-button" data-animation="animated fadeInUp">
+                                        <a href="#service-page" class="button">了解更多</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <img src="assets/images/basic.jpg" class="img-rounded">
+                                </div>
+                            </div>
                         </div>
-                        <div class="item row">
+
+                        <div class="item">
+                            <div class="v-center">
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="caption-title" data-animation="animated fadeInUp">
+                                        <h2>智能调度策略</h2>
+                                    </div>
+                                    <div class="caption-desc" data-animation="animated fadeInUp">
+                                        <p>
+                                            综合地理位置信息以及节点的状态信息进行调度，保证调度到的是距离您最近且连接客户端最少的节点，保证连接质量，智能调度策略有效帮助海外用户解决长链路丢包问题。
+                                        </p>
+                                    </div>
+                                    <div class="caption-button" data-animation="animated fadeInUp">
+                                        <a href="#service-page" class="button">了解更多</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <img src="assets/images/schedule.jpg" class="img-rounded">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
                             <div class="v-center">
                                 <div class="col-xs-12 col-md-6">
                                     <div class="caption-title" data-animation="animated fadeInUp">
@@ -28,7 +70,7 @@
                                     </div>
                                     <div class="caption-desc" data-animation="animated fadeInUp">
                                         <p>
-                                            Notr支持用户将软件部署到自身云服务器当中，并开放部分接口供二次开发
+                                            Notr支持用户使用自己的服务器作为服务节点，可以针对用户，带宽等进行管理，同时，为了更好的支持私有化授权用户开发管理平台，对外开放部分API接口
                                         </p>
                                     </div>
                                     <div class="caption-button" data-animation="animated fadeInUp">
@@ -61,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="item">
+                        <!-- <div class="item">
                             <div class="v-center">
                                 <div class="col-xs-12 col-md-6">
                                     <div class="caption-title" data-animation="animated fadeInUp">
@@ -80,7 +122,7 @@
                                     <img src="assets/images/domain.jpg" class="img-rounded">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -88,16 +130,16 @@
     </div>
 </header>
 <script>
-    platform = getOsVersion()
-    if (platform == 1){
-        document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-darwin-amd64"
-        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-darwin-amd64"
-    }else if(platform == 2){
-        document.getElementById("url").value = "http://www.notr.tech:8000/notr-windows.exe"
-        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-windows.exe"
-    }else{
-        document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-linux-amd64"
-        document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-linux-amd64"
-    } 
+    // platform = getOsVersion()
+    // if (platform == 1){
+    //     document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-darwin-amd64"
+    //     document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-darwin-amd64"
+    // }else if(platform == 2){
+    //     document.getElementById("url").value = "http://www.notr.tech:8000/notr-windows.exe"
+    //     document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-windows.exe"
+    // }else{
+    //     document.getElementById("url").value = "wget http://www.notr.tech:8000/notr-linux-amd64"
+    //     document.getElementById("download-btn").href = "http://www.notr.tech:8000/notr-linux-amd64"
+    // } 
 </script>
     
